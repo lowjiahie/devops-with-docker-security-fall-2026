@@ -1,0 +1,14 @@
+FROM golang:1.16 AS build
+WORKDIR /usr/src/app
+COPY code/example-backend/go.mod code/example-backend/go.sum ./
+RUN go mod download
+COPY code/example-backend/ ./
+RUN CGO_ENABLED=0 go build -o server .
+
+FROM scratch
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build /usr/src/app/server /server
+ENV REQUEST_ORIGIN=http://localhost:5001
+USER 10001:10001
+EXPOSE 8080
+CMD ["/server"]
