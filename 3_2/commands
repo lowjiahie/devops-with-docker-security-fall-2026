@@ -1,0 +1,3 @@
+docker build -t jhlow0106/docker-quick-reference:latest .
+docker run --rm -p 127.0.0.1:8090:8080 jhlow0106/docker-quick-reference:latest
+docker push jhlow0106/docker-quick-reference:latest
